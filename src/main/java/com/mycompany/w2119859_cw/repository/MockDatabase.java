@@ -7,22 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MockDatabase {
-
-    // These static lists act as our database tables
     public static final List<Room> ROOMS = new ArrayList<>();
-
     public static final List<Sensor> SENSORS = new ArrayList<>();
     public static final List<SensorReading> READINGS = new ArrayList<>();
 
     static {
-        // Initial Room
-        ROOMS.add(new Room("LIB-301", "Library Quiet Study", 50));
+        // Create Room first
+        Room room1 = new Room("LIB-301", "Library Quiet Study", 50);
+        ROOMS.add(room1);
 
-        // Initial Sensor linked to LIB-301
-        Sensor tempSensor = new Sensor("TEMP-001", "Temperature", "ACTIVE", "LIB-301");
-        SENSORS.add(tempSensor);
-
-        // Link the sensor ID back to the room's sensor list
-        ROOMS.get(0).getSensorIds().add("TEMP-001");
+        // Create Sensor and link to Room ID
+        Sensor sensor1 = new Sensor("TEMP-001", "Temperature", "ACTIVE", "LIB-301");
+        SENSORS.add(sensor1);
+        
+        // Add Sensor ID to the Room's list
+        room1.getSensorIds().add("TEMP-001");
     }
 }
