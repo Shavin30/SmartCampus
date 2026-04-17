@@ -19,8 +19,8 @@ public class SensorResource {
     private GenericRepository<Room> roomRepo = new GenericRepository<>(MockDatabase.ROOMS);
 
     /**
-     * Part 3.2: GET / - List all sensors. 
-     * Supports filtering by type (e.g., /sensors?type=Temperature)
+     * Part 3.2: GET / - List all sensors. Supports filtering by type (e.g.,
+     * /sensors?type=Temperature)
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,10 +47,20 @@ public class SensorResource {
         }
 
         sensorRepo.add(sensor);
-        
+
         // Update the Room's internal list to maintain the relationship
         room.getSensorIds().add(sensor.getId());
-        
+
         return Response.status(Response.Status.CREATED).entity(sensor).build();
+    }
+
+    /**
+     * Part 4: Sub-resource locator. This handles any request starting with
+     * /sensors/{sensorId}/readings
+     */
+    @Path("/{sensorId}/readings")
+    public SensorReadingResource getReadingResource(@PathParam("sensorId") String sensorId) {
+        // We pass the sensorId to the sub-resource constructor
+        return new SensorReadingResource(sensorId);
     }
 }
