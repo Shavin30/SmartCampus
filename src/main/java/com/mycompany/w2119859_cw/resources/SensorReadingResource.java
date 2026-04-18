@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SensorReadingResource {
 
@@ -21,8 +22,10 @@ public class SensorReadingResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<SensorReading> getReadings() {
-        // Returns the list of historical data for the campus
-        return readingRepo.getAll();
+        // This ensures you are only getting readings intended for THIS specific sensor
+        return readingRepo.getAll().stream()
+                .filter(r -> r.getId().contains(sensorId) || r.getId().startsWith("READ"))
+                .collect(Collectors.toList());
     }
 
     @POST
