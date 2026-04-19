@@ -17,7 +17,6 @@ public class SensorReadingResource {
     private GenericRepository<Sensor> sensorRepo = new GenericRepository<>(MockDatabase.SENSORS);
     private GenericRepository<SensorReading> readingRepo = new GenericRepository<>(MockDatabase.READINGS);
 
-    // This constructor captures the sensorId from the parent
     public SensorReadingResource(String sensorId) {
         this.sensorId = sensorId;
     }
@@ -25,7 +24,6 @@ public class SensorReadingResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<SensorReading> getReadings() {
-        // This ensures you are only getting readings intended for THIS specific sensor
         return readingRepo.getAll().stream()
                 .filter(r -> r.getId().contains(sensorId) || r.getId().startsWith("READ"))
                 .collect(Collectors.toList());
@@ -35,10 +33,8 @@ public class SensorReadingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addReading(SensorReading reading) {
-        // 1. Fetch the sensor associated with this ID from the database
         Sensor sensor = sensorRepo.getById(sensorId);
 
-        // 2. Logic to check if the sensor is available
         if (sensor != null && !"ACTIVE".equalsIgnoreCase(sensor.getStatus())) {
             throw new SensorUnavailableException("Sensor " + sensorId + " is currently " + sensor.getStatus() + " and cannot accept new readings.");
         }
