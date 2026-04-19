@@ -17,7 +17,7 @@ public class MockDatabase {
         ROOMS.add(room1);
 
         // Create Sensor and link to Room ID
-        Sensor sensor1 = new Sensor("TEMP-001", "Temperature", "ACTIVE", "LIB-301");
+        Sensor sensor1 = new Sensor("TEMP-001", "Temperature", "OFFLINE", "LIB-301");
         SENSORS.add(sensor1);
         
         // Add Sensor ID to the Room's list
