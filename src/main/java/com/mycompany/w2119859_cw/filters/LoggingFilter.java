@@ -1,4 +1,4 @@
-package com.mycompany.w2119859_cw.resources;
+package com.mycompany.w2119859_cw.filters;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
