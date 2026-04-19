@@ -12,7 +12,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable exception) {
         Map<String, Object> error = new HashMap<>();
-        error.put("errorMessage", "An unexpected server error occurred: " + exception.getMessage());
+        error.put("errorMessage", "An unexpected server error occurred");
         error.put("errorCode", 500);
         
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

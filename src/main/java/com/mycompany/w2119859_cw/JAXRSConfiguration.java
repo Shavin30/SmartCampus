@@ -5,9 +5,9 @@ import javax.ws.rs.core.Application;
 
 /**
  * Configures JAX-RS for the application.
- * @author Juneau
+ * @author Shavin De Silva
  */
-@ApplicationPath("/api/v1") // Required by CW spec
+@ApplicationPath("/api/v1")
 public class JAXRSConfiguration extends Application {
     
 }

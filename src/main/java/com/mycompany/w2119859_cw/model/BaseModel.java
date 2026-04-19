@@ -1,6 +1,6 @@
 package com.mycompany.w2119859_cw.model;
 
 public interface BaseModel {
-    String getId(); // Note: Your CW spec uses String IDs like "LIB-301"
+    String getId(); 
     void setId(String id);
 }

@@ -3,8 +3,8 @@ package com.mycompany.w2119859_cw.model;
 public class Sensor implements BaseModel {
 
     private String id;
-    private String type; // e.g., "Temperature", "CO2"
-    private String status; // "ACTIVE", "MAINTENANCE", or "OFFLINE"
+    private String type; 
+    private String status; 
     private double currentValue;
     private String roomId;
 

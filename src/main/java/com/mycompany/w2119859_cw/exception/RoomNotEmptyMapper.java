@@ -11,14 +11,14 @@ import javax.ws.rs.core.MediaType;
 @Provider
 public class RoomNotEmptyMapper implements ExceptionMapper<RoomNotEmptyException> {
     @Override
-    @Produces(MediaType.APPLICATION_JSON) // Add this line
+    @Produces(MediaType.APPLICATION_JSON)
     public Response toResponse(RoomNotEmptyException ex) {
         Map<String, Object> error = new HashMap<>();
         error.put("errorMessage", ex.getMessage());
         error.put("errorCode", 400); 
         
         return Response.status(Response.Status.BAD_REQUEST)
-                .type(MediaType.APPLICATION_JSON) // Force the response type here too
+                .type(MediaType.APPLICATION_JSON) 
                 .entity(error)
                 .build();
     }

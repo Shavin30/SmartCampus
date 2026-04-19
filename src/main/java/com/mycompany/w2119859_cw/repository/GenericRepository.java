@@ -29,7 +29,7 @@ public class GenericRepository<T extends BaseModel> {
     public void update(T updatedItem) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getId().equals(updatedItem.getId())) {
-                items.set(i, updatedItem); // Replaces the old object in memory
+                items.set(i, updatedItem); 
                 return;
             }
         }
