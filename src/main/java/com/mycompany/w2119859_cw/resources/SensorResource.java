@@ -12,25 +12,24 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Path("/sensors") 
+@Path("/sensors")
 public class SensorResource {
 
     private GenericRepository<Sensor> sensorRepo = new GenericRepository<>(MockDatabase.SENSORS);
     private GenericRepository<Room> roomRepo = new GenericRepository<>(MockDatabase.ROOMS);
 
-    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Sensor> getAllSensors(@QueryParam("type") String type) {
-        if (type != null && !type.isEmpty()) {
+        if (type != null && !type.trim().isEmpty()) {
             return sensorRepo.getAll().stream()
-                    .filter(s -> s.getType().equalsIgnoreCase(type))
+                    .filter(s -> s.getType() != null
+                    && s.getType().trim().equalsIgnoreCase(type.trim()))
                     .collect(Collectors.toList());
         }
         return sensorRepo.getAll();
     }
 
-    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,10 +45,9 @@ public class SensorResource {
 
         return Response.status(Response.Status.CREATED).entity(sensor).build();
     }
-    
+
     @Path("/{sensorId}/readings")
     public SensorReadingResource getReadingResource(@PathParam("sensorId") String sensorId) {
-        // We pass the sensorId to the sub-resource constructor
         return new SensorReadingResource(sensorId);
     }
 }
