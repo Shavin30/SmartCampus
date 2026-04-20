@@ -11,6 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/sensors")
 public class SensorResource {
@@ -33,17 +35,26 @@ public class SensorResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createSensor(Sensor sensor) {
+    public Response createSensor(Sensor sensor, @Context UriInfo uriInfo) {
+        // Existing room validation logic
         Room room = roomRepo.getById(sensor.getRoomId());
         if (room == null) {
             throw new LinkedResourceNotFoundException("Cannot link sensor: Room ID " + sensor.getRoomId() + " not found.");
         }
 
         sensorRepo.add(sensor);
-
         room.getSensorIds().add(sensor.getId());
 
-        return Response.status(Response.Status.CREATED).entity(sensor).build();
+        // Professional Practice: Build the Location URI
+        java.net.URI uri = uriInfo.getAbsolutePathBuilder().path(sensor.getId()).build();
+
+        // Minimal Response: Return only the ID
+        java.util.Map<String, String> responseBody = new java.util.HashMap<>();
+        responseBody.put("id", sensor.getId());
+
+        return Response.created(uri)
+                .entity(responseBody)
+                .build();
     }
 
     @Path("/{sensorId}/readings")

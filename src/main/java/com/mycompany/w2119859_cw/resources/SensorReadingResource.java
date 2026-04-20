@@ -10,6 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 public class SensorReadingResource {
 
@@ -32,14 +34,25 @@ public class SensorReadingResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addReading(SensorReading reading) {
+    public Response addReading(SensorReading reading, @Context UriInfo uriInfo) {
         Sensor sensor = sensorRepo.getById(sensorId);
 
+        // Existing availability logic
         if (sensor != null && !"ACTIVE".equalsIgnoreCase(sensor.getStatus())) {
-            throw new SensorUnavailableException("Sensor " + sensorId + " is currently " + sensor.getStatus() + " and cannot accept new readings.");
+            throw new SensorUnavailableException("Sensor " + sensorId + " is currently " + sensor.getStatus());
         }
 
         readingRepo.add(reading);
-        return Response.status(Response.Status.CREATED).entity(reading).build();
+
+        // Build the Location URI
+        java.net.URI uri = uriInfo.getAbsolutePathBuilder().path(reading.getId()).build();
+
+        // Minimal Response: Return only the ID
+        java.util.Map<String, String> responseBody = new java.util.HashMap<>();
+        responseBody.put("id", reading.getId());
+
+        return Response.created(uri)
+                .entity(responseBody)
+                .build();
     }
 }
