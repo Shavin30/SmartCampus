@@ -36,7 +36,6 @@ public class SensorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createSensor(Sensor sensor, @Context UriInfo uriInfo) {
-        // Existing room validation logic
         Room room = roomRepo.getById(sensor.getRoomId());
         if (room == null) {
             throw new LinkedResourceNotFoundException("Cannot link sensor: Room ID " + sensor.getRoomId() + " not found.");
@@ -45,10 +44,8 @@ public class SensorResource {
         sensorRepo.add(sensor);
         room.getSensorIds().add(sensor.getId());
 
-        // Professional Practice: Build the Location URI
         java.net.URI uri = uriInfo.getAbsolutePathBuilder().path(sensor.getId()).build();
 
-        // Minimal Response: Return only the ID
         java.util.Map<String, String> responseBody = new java.util.HashMap<>();
         responseBody.put("id", sensor.getId());
 

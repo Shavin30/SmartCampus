@@ -16,7 +16,7 @@ public class RoomNotEmptyMapper implements ExceptionMapper<RoomNotEmptyException
         error.put("errorMessage", "The room is currently occupied by active hardware.");
         error.put("errorCode", 409);
 
-        return Response.status(Response.Status.CONFLICT) // Changed from BAD_REQUEST to CONFLICT
+        return Response.status(Response.Status.CONFLICT) 
                 .type(MediaType.APPLICATION_JSON)
                 .entity(error)
                 .build();

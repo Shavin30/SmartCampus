@@ -44,10 +44,8 @@ public class SensorReadingResource {
 
         readingRepo.add(reading);
 
-        // Build the Location URI
         java.net.URI uri = uriInfo.getAbsolutePathBuilder().path(reading.getId()).build();
 
-        // Minimal Response: Return only the ID
         java.util.Map<String, String> responseBody = new java.util.HashMap<>();
         responseBody.put("id", reading.getId());
 
