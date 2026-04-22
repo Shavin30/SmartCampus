@@ -38,7 +38,7 @@ public class SensorReadingResource {
         Sensor sensor = sensorRepo.getById(sensorId);
 
         // Existing availability logic
-        if (sensor != null && !"ACTIVE".equalsIgnoreCase(sensor.getStatus())) {
+        if (sensor == null || !"ACTIVE".equalsIgnoreCase(sensor.getStatus())) {
             throw new SensorUnavailableException("Sensor " + sensorId + " is currently " + sensor.getStatus());
         }
 
