@@ -31,7 +31,7 @@ public class SensorResource {
         }
         return sensorRepo.getAll();
     }
- 
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
