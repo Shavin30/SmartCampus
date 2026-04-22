@@ -1,5 +1,6 @@
 package com.mycompany.w2119859_cw.resources;
 
+import com.mycompany.w2119859_cw.exception.LinkedResourceNotFoundException;
 import com.mycompany.w2119859_cw.exception.SensorUnavailableException;
 import com.mycompany.w2119859_cw.model.Sensor;
 import com.mycompany.w2119859_cw.model.SensorReading;
@@ -38,10 +39,15 @@ public class SensorReadingResource {
         Sensor sensor = sensorRepo.getById(sensorId);
 
         // Existing availability logic
-        if (sensor == null || !"ACTIVE".equalsIgnoreCase(sensor.getStatus())) {
-            throw new SensorUnavailableException("Sensor " + sensorId + " is currently " + sensor.getStatus());
+        // 1. Check if sensor exists at all
+        if (sensor == null) {
+            throw new LinkedResourceNotFoundException("Sensor " + sensorId + " not found.");
         }
 
+// 2. Now it is safe to check the status because we know 'sensor' isn't null
+        if (!"ACTIVE".equalsIgnoreCase(sensor.getStatus())) {
+            throw new SensorUnavailableException("Sensor " + sensorId + " is currently " + sensor.getStatus());
+        }
         readingRepo.add(reading);
 
         java.net.URI uri = uriInfo.getAbsolutePathBuilder().path(reading.getId()).build();
