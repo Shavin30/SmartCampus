@@ -20,7 +20,7 @@ public class DiscoveryResource {
         Map<String, String> links = new HashMap<>();
         links.put("rooms", "/api/v1/rooms");
         links.put("sensors", "/api/v1/sensors");
-        links.put("sensors", "/api/v1/sensors/{sensorId}/readings");
+        links.put("sensor Readings", "/api/v1/sensors/{sensorId}/readings");
         
         response.put("links", links);
         return response;
